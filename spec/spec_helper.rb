@@ -7,7 +7,7 @@ def foodcritic_run(rule_name)
   fc = FoodCritic::Linter.new
 
   opts = {
-    :include_rules => [File.join(PROJECT_ROOT, 'rules')],
+    :include_rules => [File.join(PROJECT_ROOT, 'lib/foodcritic/rules')],
     :tags => [rule_name.upcase]
   }
 
