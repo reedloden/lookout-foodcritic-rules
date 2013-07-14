@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/lookout/lookout-foodcritic-rules.png?branch=master)](https://travis-ci.org/lookout/lookout-foodcritic-rules)
+
 # lookout-foodcritic-rules
 
 Custom foodcritic rules used on chef recipes at Lookout.
@@ -22,7 +24,7 @@ Once you have installed the gem, simply run foodcritic with the `-G` option:
 
 # Rules
 
-## LKOUT001: Include a chefspec test for every recipe
+## <a id="LKOUT001"></a>LKOUT001: Include a chefspec test for every recipe
 
 We use chefspec for unit testing our recipes.  As a general standard, every
 recipe is required to have an associated unit test.
