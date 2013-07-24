@@ -34,19 +34,47 @@ This rules looks for files under the cookbook's `spec` directory named
 
 For example:
 
-```bash
+    # Good
+    $ ls cookbooks/my_cookbook/recipes/my_recipe.rb 
+    cookbooks/my_cookbook/recipes/my_recipe.rb
+    $ ls cookbooks/my_cookbook/spec/my_recipe_spec.rb 
+    cookbooks/my_cookbook/spec/my_recipe_spec.rb
+    
+    # Bad
+    $ ls cookbooks/my_cookbook/recipes/my_other_recipe.rb 
+    cookbooks/my_cookbook/recipes/my_other_recipe.rb
+    $ ls cookbooks/my_cookbook/spec/my_other_recipe_spec.rb 
+    ls: cannot access cookbooks/my_cookbook/spec/my_other_recipe_spec.rb: No such file or directory
+
+## <a id="LKOUT002"></a>LKOUT002: apt_repository should not download a key over plain http
+
+The `apt_repository` LWRP, provided by the [opscode apt cookbook](https://github.com/opscode-cookbooks/apt),
+allows a key to be either downloaded over http(s) or from a keyserver.  Since
+downloading the key over http subjects you to a possible man-in-the-middle
+attack, you should never use http and always either prefer https or a keyserver.
+
+Note that it's ok for the source uri to be http, as long as the key itself
+is downloaded via a secure channel (though https is preferred for *everything*).
+
+```ruby
 # Good
-$ ls cookbooks/my_cookbook/recipes/my_recipe.rb 
-cookbooks/my_cookbook/recipes/my_recipe.rb
-$ ls cookbooks/my_cookbook/spec/my_recipe_spec.rb 
-cookbooks/my_cookbook/spec/my_recipe_spec.rb
+apt_repository "valid_repository" do
+  uri "http://foo.bar/ubuntu"
+  keyserver "keyserver.foo.bar"
+  key "DECAFBAD"
+end
+
+apt_repository "valid_repository2" do
+  uri "http://foo.bar/ubuntu"
+  key "https://foo.bar/fake.key"
+end
 
 # Bad
-$ ls cookbooks/my_cookbook/recipes/my_other_recipe.rb 
-cookbooks/my_cookbook/recipes/my_other_recipe.rb
-$ ls cookbooks/my_cookbook/spec/my_other_recipe_spec.rb 
-ls: cannot access cookbooks/my_cookbook/spec/my_other_recipe_spec.rb: No such file or directory
-```
+apt_repository "valid_repository2" do
+  uri "http://foo.bar/ubuntu"
+  key "http://foo.bar/fake.key"
+end
+```ruby
 
 # License
 
