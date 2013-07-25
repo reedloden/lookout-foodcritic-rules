@@ -76,6 +76,33 @@ apt_repository "valid_repository2" do
 end
 ```
 
+## <a id="LKOUT003"></a>LKOUT003: user should have a uid and gid specified
+
+It is possible to create a `user` in chef without specifying a `uid` or `gid`,
+which will rely on the system to pick automatically.  When this happens, uids
+and gids can get out of sync across your hosts, as well as conflict with any
+uids or gids that you have actually specified.
+
+To avoid these pitfalls, we require that all `user` resources have a defined
+uid/gid (unless the user is being removed).
+
+```ruby
+# Good
+user 'foo' do
+  uid 123
+  gid 'users'
+end
+
+# Bad
+user 'bar' do
+  password '*'
+end
+
+user 'baz' do
+  uid '123'
+end
+```
+
 # License
 
 Lookout Foodcritic Rules
