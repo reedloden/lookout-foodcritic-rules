@@ -1,4 +1,4 @@
-rule "LKOUT003", "user should have a uid and gid specified" do
+rule "LKOUT003", "specify a uid and gid when creating a user" do
   tags %w{lookout style}
   recipe do |ast|
     find_resources(ast, :type => 'user').select do |u|
@@ -6,7 +6,10 @@ rule "LKOUT003", "user should have a uid and gid specified" do
       gid = resource_attribute(u, 'gid')
       action = resource_attribute(u, 'action')
 
-      action != :remove && (uid.nil? || gid.nil?)
+      is_create_action = action.nil? || action == :create
+      has_no_ids = uid.nil? || gid.nil?
+
+      is_create_action && has_no_ids
     end
   end
 end

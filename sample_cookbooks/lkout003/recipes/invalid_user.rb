@@ -12,3 +12,6 @@ end
 user 'baz' do
   password 'foobar'
 end
+
+# user with all defaults
+user 'qux'

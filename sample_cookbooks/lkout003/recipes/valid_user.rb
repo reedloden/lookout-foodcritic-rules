@@ -8,3 +8,13 @@ end
 user 'bar' do
   action :remove
 end
+
+# doesn't match on users that are managed
+user 'baz' do
+  action :manage
+end
+
+# doesn't match on users that are modified
+user 'qux' do
+  action :modify
+end

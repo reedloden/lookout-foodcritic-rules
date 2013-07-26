@@ -76,15 +76,17 @@ apt_repository "valid_repository2" do
 end
 ```
 
-## <a id="LKOUT003"></a>LKOUT003: user should have a uid and gid specified
+## <a id="LKOUT003"></a>LKOUT003: specify a uid and gid when creating a user
 
 It is possible to create a `user` in chef without specifying a `uid` or `gid`,
 which will rely on the system to pick automatically.  When this happens, uids
 and gids can get out of sync across your hosts, as well as conflict with any
 uids or gids that you have actually specified.
 
-To avoid these pitfalls, we require that all `user` resources have a defined
-uid/gid (unless the user is being removed).
+To avoid these pitfalls, we require that all `user` resources  with `action :create`
+have a defined uid/gid.  If users are created by outside mechanisms (for example,
+post-install scripts in packages) then you should use the `:modify` or `:manage`
+actions to control them; when doing this, specifying a uid/gid is not required.
 
 ```ruby
 # Good
