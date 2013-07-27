@@ -105,6 +105,32 @@ user 'baz' do
 end
 ```
 
+## <a id="LKOUT004"></a>LKOUT004: specify a gid when creating a group
+
+It is possible to create a `group` in chef without specifying a `gid`, which
+will rely on the system to pick automatically.  When this happens, gids can
+get out of sync across your hosts, as well as conflict with any gids that you
+have actually specified.
+
+To avoid these pitfalls, we require that all `group` resources  with `action :create`
+have a defined gid.  If groups are created by outside mechanisms (for example,
+post-install scripts in packages) then you should use the `:modify` or `:manage`
+actions to control them; when doing this, specifying a gid is not required.
+
+```ruby
+# Good
+group 'foo' do
+  gid 123
+end
+
+# Bad
+group 'bar'
+
+group 'baz' do
+  system true
+end
+```
+
 # License
 
 Lookout Foodcritic Rules
