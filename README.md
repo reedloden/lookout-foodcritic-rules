@@ -131,6 +131,24 @@ group 'baz' do
 end
 ```
 
+## <a id="LKOUT005"></a>LKOUT005: specify an action when using a resource
+
+Resources have default actions that are followed if not specified. However,
+knowing what that action is is not always immediately understood, so we
+require that an action be explicitly specified for every resource used.
+
+```ruby
+# Good
+package 'foo' do
+  action :install
+end
+
+# Bad
+gem 'bar'
+
+service 'baz'
+```
+
 # License
 
 Lookout Foodcritic Rules
